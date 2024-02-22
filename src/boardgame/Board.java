@@ -36,4 +36,10 @@ public class Board {
 	public Piece piece(Position position) { //retorna um objeto Piece com o metodo piece, recebendo (Position position) retornando o metodo pela posicao
 		return pieces[position.getRow()][position.getColumn()];
 	}
+	
+	//metodo para implementar uma peca no tabuleiro
+	public void placePiece(Piece piece, Position position) {
+		pieces[position.getRow()][position.getColumn()] = piece; //pega a matriz pieces[na posicao dada] = e atribui a peca que infomou
+		piece.position = position; //informar que não esta na posicao nula, recebe a posicao informada no metodo public void placePiece(Piece piece, Position position)
+	}
 }
