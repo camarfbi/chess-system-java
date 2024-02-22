@@ -28,7 +28,12 @@ public class Board {
 		this.columns = columns;
 	}
 	
-	
-	
-
+	//metodo para retornar a peca em uma linha/coluna
+	public Piece piece(int row, int column) { //retorna um objeto Piece com o metodo piece, recebendo int row e column
+		return pieces[row][column]; //retorna matriz pieces na linha e coluna
+	}
+	//sobrecarga do metodo informando linha e coluna
+	public Piece piece(Position position) { //retorna um objeto Piece com o metodo piece, recebendo (Position position) retornando o metodo pela posicao
+		return pieces[position.getRow()][position.getColumn()];
+	}
 }
