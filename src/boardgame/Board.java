@@ -50,6 +50,21 @@ public class Board {
 		piece.position = position; //informar que não esta na posicao nula, recebe a posicao informada no metodo public void placePiece(Piece piece, Position position)
 	}
 	
+	//Aula 189 Movendo pecas
+	public Piece removePiece(Position position) {
+		if(!positionExists(position)) {//programacao defensiva
+			throw new BoardException("Position not on the board");
+		}
+		if(piece (position) == null) {//testa se a posicao da peca no tab e nulo, se for verdade, sgnifica que nao tem peca nessa posicao e retorna null
+			return null;
+		}
+		Piece aux = piece(position); //declara var aux que recebe a peca no tab nessa posicao
+		aux.position = null;
+		pieces[position.getRow()][position.getColumn()] = null; //essa matriz de pecas na linha e coluna position recebe nulo para remover a peca
+		return aux; //retorna o aux que contem a peca retirada
+
+	}
+	
 	//metodo aux para facilitar o teste por linha e coluna
 	private boolean positionExists(int row, int column) {
 		return row >= 0 && row < rows && column >=0 && column < columns; //condicao para ver se uma posicao existe

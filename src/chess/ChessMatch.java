@@ -1,6 +1,8 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -21,6 +23,28 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 			}
 		}
 		return mat;
+	}
+	
+	//aula 189 - retirar peca da pocicao de origem e colocar na posicao de destino
+	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition();
+		Position target = targetPosition.toPosition();
+		ValidateSourcePosition(source); //validando posicao de origem, se nao existir lanca exessao
+		Piece capturedPiece = makeMove(source, target);//recebe o resultado do makeMovie e realiza o movimento da peca
+		return (ChessPiece)capturedPiece; //retorna peca capturada e faz downcasting para ChessPiece
+	}
+		
+	private Piece makeMove(Position source, Position target) {
+		Piece p = board.removePiece(source);
+		Piece capturedPiece = board.removePiece(target);
+		board.placePiece(p, target);
+		return capturedPiece;
+	}
+	
+	private void ValidateSourcePosition(Position position) {
+		if (!board.thereIsAPiece(position)) {
+			 throw new ChessException("There is piece on source position");
+		}
 	}
 	
 	//metodo recebe coordenadas do xadrez
