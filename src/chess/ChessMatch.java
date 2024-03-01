@@ -43,7 +43,10 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 	
 	private void ValidateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {
-			 throw new ChessException("There is piece on source position");
+			 throw new ChessException("There is no piece on source position");
+		}
+		if (!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("There is no moves for the chosen piece");
 		}
 	}
 	
