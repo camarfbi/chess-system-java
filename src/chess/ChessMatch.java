@@ -29,7 +29,8 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 		Position source = sourcePosition.toPosition();
 		Position target = targetPosition.toPosition();
-		ValidateSourcePosition(source); //validando posicao de origem, se nao existir lanca exessao
+		validateSourcePosition(source); //validando posicao de origem, se nao existir lanca exessao
+		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);//recebe o resultado do makeMovie e realiza o movimento da peca
 		return (ChessPiece)capturedPiece; //retorna peca capturada e faz downcasting para ChessPiece
 	}
@@ -41,12 +42,18 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 		return capturedPiece;
 	}
 	
-	private void ValidateSourcePosition(Position position) {
+	private void validateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {
-			 throw new ChessException("There is no piece on source position");
+			throw new ChessException("There is no piece on source position");
 		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
-			throw new ChessException("There is no moves for the chosen piece");
+			throw new ChessException("There is no possible moves for the chosen piece");
+		}
+	}
+	
+	private void validateTargetPosition(Position source, Position target) {
+		if (!board.piece(source).possibleMove(target)) {
+			throw new ChessException("The chosen piece can't move to target position");
 		}
 	}
 	
