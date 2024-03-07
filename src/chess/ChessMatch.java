@@ -8,12 +8,26 @@ import chess.pieces.Rook;
 
 public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que saber a dimencao de um tabuleiro e a ChessMatch
 	
+	private int turn;
+	private Color currentPlayer;
 	private Board board;
+	
 	//construtor padrao
 	public ChessMatch() {
 		board = new Board(8, 8); //definindo o tamanho do tabuleiro
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		initialSetup(); //chama para posicionar as pecas
 	}
+	
+	public int getTurn() {
+		return turn;
+	}
+	
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
 	//metodo para retornar uma matriz de pecas de xadrez correspondente a essa partida
 	public ChessPiece[][] getPieces(){
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
@@ -39,6 +53,7 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 		validateSourcePosition(source); //validando posicao de origem, se nao existir lanca exessao
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);//recebe o resultado do makeMovie e realiza o movimento da peca
+		nextTurn();
 		return (ChessPiece)capturedPiece; //retorna peca capturada e faz downcasting para ChessPiece
 	}
 		
@@ -53,6 +68,9 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 		if (!board.thereIsAPiece(position)) {
 			throw new ChessException("There is no piece on source position");
 		}
+		if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) {
+			throw new ChessException("The chose piece is not your");
+		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("There is no possible moves for the chosen piece");
 		}
@@ -62,6 +80,11 @@ public class ChessMatch { //classe com as regras do jogo de xadrez; Quem tem que
 		if (!board.piece(source).possibleMove(target)) {
 			throw new ChessException("The chosen piece can't move to target position");
 		}
+	}
+	
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
 	}
 	
 	//metodo recebe coordenadas do xadrez
